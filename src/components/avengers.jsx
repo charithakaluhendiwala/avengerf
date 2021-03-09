@@ -17,6 +17,7 @@ class Avengers extends Component {
                 key={avenger.id}
                 avenger={avenger}
                 onLike={() => this.likeAvenger(avenger)}
+                onDelete={() => this.deleteAvenger(avenger.id)}
               />
             </div>
           ))}
@@ -25,9 +26,9 @@ class Avengers extends Component {
     );
   }
   async componentDidMount() {
-    const  {data} = await axios.get("http://localhost:5000/api/avengers");
-    
-    let avengers =  data.map(avenger => {
+    const { data } = await axios.get("http://localhost:5000/api/avengers");
+
+    let avengers = data.map((avenger) => {
       return {
         id: avenger._id,
         imgUrl: avenger.imgUrl,
@@ -39,20 +40,30 @@ class Avengers extends Component {
     });
     this.setState({ allAvengers: avengers });
   }
- 
+
   async likeAvenger(avenger) {
     //try catch on http method
-    await axios.put(`http://localhost:5000/api/avengers/${avenger.id}`, 
-      {likeCount: avenger.likeCount + 1});
+    await axios.put(`http://localhost:5000/api/avengers/${avenger.id}`, {
+      likeCount: avenger.likeCount + 1,
+    });
 
     let updatedAvengers = [...this.state.allAvengers];
     let index = updatedAvengers.indexOf(avenger);
     updatedAvengers[index] = { ...avenger };
     updatedAvengers[index].likeCount++;
-    this.setState({ allAvengers : updatedAvengers });
+    this.setState({ allAvengers: updatedAvengers });
   }
- 
+
+  async deleteAvenger(id) {
+    await axios.delete(`http://localhost:5000/api/avengers/${id}`);
+
+    let updatedAvengers = this.state.allAvengers.filter(
+      (avenger) => avenger.id !== id,
+    );
+    this.setState({ allAvengers: updatedAvengers });
+  }
 }
+
 
 
 export default Avengers

@@ -46,14 +46,10 @@ class Avenger extends Component {
                 {this.props.avenger.likeCount}
               </span>
             </span>
-          </button>{"  "}
-          <button className="btn btn-danger" onClick={this.props.onLike}>
-            Like{" "}
-            <span>
-              <span className="badge badge-warning">
-                {this.props.avenger.likeCount}
-              </span>
-            </span>
+          </button>
+          {"  "}
+          <button className="btn btn-danger" onClick={this.props.onDelete}>
+            Delete{" "}
           </button>
         </div>
       </div>
